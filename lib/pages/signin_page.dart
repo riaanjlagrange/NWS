@@ -72,7 +72,7 @@ class SignInPage extends StatelessWidget {
             // sign in
             CustomButton(text: "Sign In", onTap: signUserIn),
 
-            SizedBox(height: 50.0),
+            SizedBox(height: 30.0),
 
             // or continue with google
             Padding(
@@ -85,7 +85,7 @@ class SignInPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: Text(
-                      "Or continue with",
+                      "OR CONTINUE WITH",
                       style: TextStyle(color: Colors.grey[700]),
                     ),
                   ),
@@ -101,7 +101,7 @@ class SignInPage extends StatelessWidget {
             // sign in with google button
             SquareTile(imagePath: "assets/images/google_logo.png"),
 
-            SizedBox(height: 50.0),
+            SizedBox(height: 25.0),
 
             // not a member? register now
             Row(
@@ -109,11 +109,16 @@ class SignInPage extends StatelessWidget {
               children: [
                 Text("Not a member?"),
                 const SizedBox(width: 4),
-                Text(
-                  "Sign Up now",
-                  style: TextStyle(
-                    color: Colors.indigo,
-                    fontWeight: FontWeight.bold,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, "/signup");
+                  },
+                  child: Text(
+                    "Sign Up",
+                    style: TextStyle(
+                      color: Colors.indigo,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ],
