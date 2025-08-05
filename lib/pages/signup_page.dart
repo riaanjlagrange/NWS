@@ -3,18 +3,41 @@ import 'package:nws/components/custom_button.dart';
 import 'package:nws/components/custom_textfield.dart';
 import 'package:nws/components/square_tile.dart';
 import 'package:nws/core/constants.dart';
+import 'package:nws/services/auth_service.dart';
 
-class SignUpPage extends StatelessWidget {
-  SignUpPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
+  @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
   // input controllers
-  final emailController = TextEditingController();
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
-  // sign in function
-  void signUserIn() {}
+  // sign up
+  void signUserUp() async {
+    // show loading indicator
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
+
+    // try to sign up
+    await AuthService().signUp(
+      email: _emailController.text,
+      password: _passwordController.text,
+      confirmPassword: _confirmPasswordController.text,
+    );
+
+    // pop the loading circle
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,19 +60,10 @@ class SignUpPage extends StatelessWidget {
 
             SizedBox(height: 25.0),
 
-            // username textfield
+            // Email textfield
             CustomTextField(
-              controller: emailController,
+              controller: _emailController,
               hintText: "Email",
-              obscureText: false,
-            ),
-
-            SizedBox(height: 15.0),
-
-            // username textfield
-            CustomTextField(
-              controller: usernameController,
-              hintText: "Username",
               obscureText: false,
             ),
 
@@ -57,7 +71,7 @@ class SignUpPage extends StatelessWidget {
 
             // password textfield
             CustomTextField(
-              controller: passwordController,
+              controller: _passwordController,
               hintText: "Password",
               obscureText: true,
             ),
@@ -66,15 +80,15 @@ class SignUpPage extends StatelessWidget {
 
             // confirm password
             CustomTextField(
-              controller: confirmPasswordController,
+              controller: _confirmPasswordController,
               hintText: "Confirm Password",
               obscureText: true,
             ),
 
             SizedBox(height: 50.0),
 
-            // sign in
-            CustomButton(text: "Sign Up", onTap: signUserIn),
+            // sign up
+            CustomButton(text: "Sign Up", onTap: signUserUp),
 
             SizedBox(height: 25.0),
 

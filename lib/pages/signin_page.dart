@@ -3,16 +3,39 @@ import 'package:nws/components/custom_button.dart';
 import 'package:nws/components/custom_textfield.dart';
 import 'package:nws/components/square_tile.dart';
 import 'package:nws/core/constants.dart';
+import 'package:nws/services/auth_service.dart';
 
-class SignInPage extends StatelessWidget {
-  SignInPage({super.key});
+class SignInPage extends StatefulWidget {
+  const SignInPage({super.key});
 
+  @override
+  State<SignInPage> createState() => _SigninPageState();
+}
+
+class _SigninPageState extends State<SignInPage> {
   // input controllers
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
-  // sign in function
-  void signUserIn() {}
+  // sign in
+  void signUserIn() async {
+    // show loading circle
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
+
+    // try to sign in
+    await AuthService().signIn(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+
+    // pop the loading circle
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +58,10 @@ class SignInPage extends StatelessWidget {
 
             SizedBox(height: 25.0),
 
-            // username textfield
+            // email textfield
             CustomTextField(
-              controller: usernameController,
-              hintText: "Username",
+              controller: _emailController,
+              hintText: "Email",
               obscureText: false,
             ),
 
@@ -46,7 +69,7 @@ class SignInPage extends StatelessWidget {
 
             // password textfield
             CustomTextField(
-              controller: passwordController,
+              controller: _passwordController,
               hintText: "Password",
               obscureText: true,
             ),

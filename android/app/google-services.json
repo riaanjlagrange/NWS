@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1015178862223",
+    "project_id": "nws-flutter-firebase",
+    "storage_bucket": "nws-flutter-firebase.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1015178862223:android:5e0066b543620eb519dafa",
+        "android_client_info": {
+          "package_name": "com.example.nws"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC43g7z4CyrgeFGT7POJFyjc12KxwM7sCI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

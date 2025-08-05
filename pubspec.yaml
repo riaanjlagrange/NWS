@@ -13,6 +13,13 @@ dependencies:
 
   cupertino_icons: ^1.0.8
 
+  # Firebase
+  firebase_core: ^4.0.0
+  firebase_auth: ^6.0.0
+
+  # Toasts
+  fluttertoast: ^8.2.12
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
