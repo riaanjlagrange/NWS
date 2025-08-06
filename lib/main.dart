@@ -1,19 +1,32 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nws/blocs/auth/auth_bloc.dart';
+import 'package:nws/blocs/auth/auth_event.dart';
 import 'package:nws/firebase_options.dart';
 import 'package:nws/pages/auth_page.dart';
 import 'package:nws/pages/dashboard_page.dart';
 import 'package:nws/pages/signin_page.dart';
 import 'package:nws/pages/signup_page.dart';
+import 'package:nws/services/auth_service.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  runApp(const MyApp());
+  final authService = AuthService();
+
+  runApp(
+    BlocProvider(
+      create: (_) =>
+          AuthBloc(authService)
+            ..add(AppStarted()), // automatically check login status
+      child: const MyApp(),
+    ),
+  );
 }
 
+// Root of your app
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -21,7 +34,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SafeArea(child: SignInPage()),
       initialRoute: '/auth',
       routes: {
         '/auth': (context) => AuthPage(),

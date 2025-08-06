@@ -87,4 +87,14 @@ class AuthService {
     // sign the user out
     await FirebaseAuth.instance.signOut();
   }
+
+  // check if someone is signed in
+  bool isLoggedIn() {
+    return FirebaseAuth.instance.currentUser != null;
+  }
+
+  // get current user ID
+  String currentUserUid() {
+    return FirebaseAuth.instance.currentUser?.uid ?? '';
+  }
 }
