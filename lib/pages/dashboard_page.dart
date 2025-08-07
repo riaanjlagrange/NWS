@@ -24,6 +24,7 @@ class DashboardPage extends StatelessWidget {
               onPressed: () {
                 // dispatch sign-out event
                 context.read<AuthBloc>().add(SignOutRequested());
+                Navigator.pushReplacementNamed(context, '/auth');
               },
               icon: const Icon(Icons.logout),
               tooltip: 'Sign Out',
@@ -36,10 +37,6 @@ class DashboardPage extends StatelessWidget {
               // Get the currently signed-in user's email
               final user = FirebaseAuth.instance.currentUser;
 
-              if (user == null) {
-                return SignInPage();
-              }
-
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -49,7 +46,7 @@ class DashboardPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'Email: ${user!.email}',
+                    "Email: ${user?.email ?? ''}",
                     style: const TextStyle(fontSize: 16),
                   ),
                 ],

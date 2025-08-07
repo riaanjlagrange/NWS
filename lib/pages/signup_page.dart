@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nws/blocs/auth/auth_bloc.dart';
 import 'package:nws/blocs/auth/auth_event.dart';
 import 'package:nws/blocs/auth/auth_state.dart';
 import 'package:nws/components/custom_button.dart';
 import 'package:nws/components/custom_textfield.dart';
+import 'package:nws/components/loader.dart';
 import 'package:nws/components/square_tile.dart';
 import 'package:nws/core/constants.dart';
 
@@ -40,9 +42,19 @@ class _SignUpPageState extends State<SignUpPage> {
       // listen to authbloc for state changes
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          // if sign up success, go to dashboard
+          // if login success, go to dashboard or home screen
           if (state is AuthAuthenticated) {
             Navigator.pushReplacementNamed(context, "/dashboard");
+          } else if (state is AuthError) {
+            // else show a toast to display the error message to the user
+            Fluttertoast.showToast(
+              msg: state.message,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.SNACKBAR,
+              backgroundColor: Colors.black54,
+              textColor: Colors.white,
+              fontSize: 14.0,
+            );
           }
         },
         child: Center(
@@ -90,8 +102,18 @@ class _SignUpPageState extends State<SignUpPage> {
 
                 SizedBox(height: 50.0),
 
-                // sign up
-                CustomButton(text: "Sign Up", onTap: signUserUp),
+                // sign in button
+                BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, state) {
+                    // show loading spinner while signing in
+                    if (state is AuthLoading) {
+                      return Loader(color: Colors.indigo, size: 20.0);
+                    }
+
+                    // otherwise, show button
+                    return CustomButton(text: "Sign Up", onTap: signUserUp);
+                  },
+                ),
 
                 SizedBox(height: 25.0),
 

@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class AuthService {
   // Sign up method
-  Future<bool> signUp({
+  Future<void> signUp({
     required String email,
     required String password,
     required String confirmPassword,
@@ -20,65 +18,57 @@ class AuthService {
         email: email,
         password: password,
       );
-
-      return true;
     } on FirebaseAuthException catch (e) {
       // handles different errors accordingly
       // and set a message based on the error
-      String message = 'Something went wrong.';
-      if (e.code == "weak-password") {
-        message = "The password provided is too weak.";
-      } else if (e.code == "email-already-in-use") {
-        message = "An account already exists with that email.";
-      } else if (e.code == "unmatched-passwords") {
-        message = "Passwords do not match";
+      String message;
+
+      switch (e.code) {
+        case "weak-password":
+          message = "The password provided is too weak.";
+          break;
+        case "email-already-in-use":
+          message = "An account already exists with that email.";
+          break;
+        case "unmatched-passwords":
+          message = "Passwords do not match.";
+          break;
+        default:
+          message = "Something went wrong.";
       }
 
-      // Then show a toast to display that message to the user
-      Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.SNACKBAR,
-        backgroundColor: Colors.black54,
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
-
-      return false;
+      throw Exception(message);
     }
   }
 
   // sign in method
-  Future<bool> signIn({required String email, required String password}) async {
+  Future<void> signIn({required String email, required String password}) async {
     try {
       // sign user in with email and password
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-
-      return true;
     } on FirebaseAuthException catch (e) {
       // handles different errors accordingly
       // and set a message based on the error
-      String message = 'Something went wrong.';
-      if (e.code == "user-not-found") {
-        message = "No user found for that email.";
-      } else if (e.code == "wrong-password") {
-        message = "Wrong password provided for that user.";
+      String message;
+
+      switch (e.code) {
+        case "user-not-found":
+          message = "No user found for that email.";
+          break;
+        case "wrong-password":
+          message = "Wrong password provided for that user.";
+          break;
+        case "invalid-credential":
+          message = "Email or password is incorrect.";
+          break;
+        default:
+          message = "Something went wrong.";
       }
 
-      // Then show a toast to display that message to the user
-      Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.SNACKBAR,
-        backgroundColor: Colors.black54,
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
-
-      return false;
+      throw Exception(message);
     }
   }
 

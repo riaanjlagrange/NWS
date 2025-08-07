@@ -6,73 +6,50 @@ import 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthService _authService;
 
-  // do this when the app starts
   AuthBloc(this._authService) : super(AuthInitial()) {
+    // App launch event: check if the user is already signed in
     on<AppStarted>((event, emit) async {
-      // check if user is already logged in when the app starts
       final isLoggedIn = _authService.isLoggedIn();
-      // if so
+
       if (isLoggedIn) {
-        // set state to authenticated
         emit(AuthAuthenticated(_authService.currentUserUid()));
       } else {
-        // else set the state to unauthenticated
         emit(AuthUnauthenticated());
       }
     });
 
-    // when the user tries to sign in
+    // Handle user sign-in
     on<SignInRequested>((event, emit) async {
-      // show a loading indicator
       emit(AuthLoading());
-      // check if authentication is successful
-      final success = await _authService.signIn(
-        email: event.email,
-        password: event.password,
-      );
 
-      // if it is successful
-      if (success) {
-        // change state to authenticated
+      try {
+        await _authService.signIn(email: event.email, password: event.password);
         emit(AuthAuthenticated(_authService.currentUserUid()));
-      } else {
-        // else change the state to unauthenticated
-        emit(AuthUnauthenticated());
+      } catch (e) {
+        emit(AuthError(e.toString()));
       }
     });
 
-    // when user tries to sign up
+    // Handle user sign-up
     on<SignUpRequested>((event, emit) async {
-      // show loading indicator
       emit(AuthLoading());
-
-      // try to sign user up with email and password
-      final success = await _authService.signUp(
-        email: event.email,
-        password: event.password,
-        confirmPassword: event.confirmPassword,
-      );
-
-      // check if sign up was successful
-      if (success) {
-        // if so change state to authenticated
+      try {
+        await _authService.signUp(
+          email: event.email,
+          password: event.password,
+          confirmPassword: event.confirmPassword,
+        );
         emit(AuthAuthenticated(_authService.currentUserUid()));
-      } else {
-        // else change the state to an error
-        emit(AuthError("Failed to sign up"));
-        // do initial check (to redirect to a sign in page etc)
-        emit(AuthInitial());
+      } catch (e) {
+        emit(AuthError(e.toString()));
       }
     });
 
-    // when user tries to sign out
+    // Handle user sign-out
     on<SignOutRequested>((event, emit) async {
-      // sign the user out
+      emit(AuthLoading());
       await _authService.signOut();
-      // change state back to unauthenticated
       emit(AuthUnauthenticated());
-      // do initial check (to redirect to a sign in page etc)
-      emit(AuthInitial());
     });
   }
 }
