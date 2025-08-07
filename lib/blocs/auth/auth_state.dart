@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:nws/models/user_model.dart';
 
 abstract class AuthState extends Equatable {
   @override
@@ -13,12 +14,11 @@ class AuthLoading extends AuthState {}
 
 // state when the user is successfully logged in
 class AuthAuthenticated extends AuthState {
-  final String uid;
-
-  AuthAuthenticated(this.uid);
+  final UserModel user;
+  AuthAuthenticated(this.user);
 
   @override
-  List<Object?> get props => [uid];
+  List<Object?> get props => [user];
 }
 
 // state when no user is logged in

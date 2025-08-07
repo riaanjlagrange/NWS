@@ -22,11 +22,17 @@ class SignInRequested extends AuthEvent {
 
 // triggered when user attempt to sign up
 class SignUpRequested extends AuthEvent {
+  final String username;
   final String email;
   final String password;
   final String confirmPassword;
 
-  SignUpRequested(this.email, this.password, this.confirmPassword);
+  SignUpRequested(
+    this.username,
+    this.email,
+    this.password,
+    this.confirmPassword,
+  );
 }
 
 // triggered when the user wants to log out

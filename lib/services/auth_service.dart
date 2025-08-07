@@ -1,11 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:nws/models/user_model.dart';
 
 class AuthService {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   // Sign up method
-  Future<void> signUp({
+  Future<UserModel> signUp({
+    required String username,
     required String email,
     required String password,
     required String confirmPassword,
+    String role = 'user',
   }) async {
     try {
       // check if passwords match
@@ -14,10 +21,27 @@ class AuthService {
       }
 
       // create user with email and password
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      final UserCredential result = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      // get user's uid
+      final String uid = result.user!.uid;
+
+      // save custom user data to Firestore
+      final UserModel user = UserModel(
+        uid: uid,
+        email: email,
+        username: username,
+        role: role,
+      );
+
+      // store user data to firestore
+      await _firestore.collection('users').doc(uid).set(user.toMap());
+
+      // return the user to be used in bloc
+      return user;
     } on FirebaseAuthException catch (e) {
       // handles different errors accordingly
       // and set a message based on the error
@@ -42,13 +66,30 @@ class AuthService {
   }
 
   // sign in method
-  Future<void> signIn({required String email, required String password}) async {
+  Future<UserModel> signIn({
+    required String email,
+    required String password,
+  }) async {
     try {
       // sign user in with email and password
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final result = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      // get user id
+      final uid = result.user!.uid;
+
+      // try to get user data from firestore using uid
+      final doc = await _firestore.collection('users').doc(uid).get();
+
+      // throw exception if user is not found
+      if (!doc.exists) {
+        throw Exception("User data not found");
+      }
+
+      // convert to usermodel and return user
+      return UserModel.fromMap(uid, doc.data()!);
     } on FirebaseAuthException catch (e) {
       // handles different errors accordingly
       // and set a message based on the error

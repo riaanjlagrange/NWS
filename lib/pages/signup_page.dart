@@ -19,6 +19,7 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   // input controllers
+  final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
@@ -26,12 +27,13 @@ class _SignUpPageState extends State<SignUpPage> {
   // sign up
   // update this to use bloc
   void signUserUp() {
+    final username = _usernameController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
     final confirmPassword = _confirmPasswordController.text.trim();
 
     context.read<AuthBloc>().add(
-      SignUpRequested(email, password, confirmPassword),
+      SignUpRequested(username, email, password, confirmPassword),
     );
   }
 
@@ -74,6 +76,15 @@ class _SignUpPageState extends State<SignUpPage> {
                 Text("Create An Account", style: kSoftHeading),
 
                 SizedBox(height: 25.0),
+
+                // username textfield
+                CustomTextField(
+                  controller: _usernameController,
+                  hintText: "Username",
+                  obscureText: false,
+                ),
+
+                SizedBox(height: 15.0),
 
                 // email textfield
                 CustomTextField(

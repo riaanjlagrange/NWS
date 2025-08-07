@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:nws/pages/signin_page.dart';
+import 'package:nws/components/loader.dart';
 
 import '../blocs/auth/auth_bloc.dart';
 import '../blocs/auth/auth_event.dart';
@@ -24,6 +24,7 @@ class DashboardPage extends StatelessWidget {
               onPressed: () {
                 // dispatch sign-out event
                 context.read<AuthBloc>().add(SignOutRequested());
+                // navigate back to auth page to redirect accordingly
                 Navigator.pushReplacementNamed(context, '/auth');
               },
               icon: const Icon(Icons.logout),
@@ -34,23 +35,42 @@ class DashboardPage extends StatelessWidget {
         body: Center(
           child: BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
-              // Get the currently signed-in user's email
-              final user = FirebaseAuth.instance.currentUser;
+              // if the state is loading
+              if (state is AuthLoading) {
+                // show loader
+                return Loader(color: Colors.indigo, size: 40.0);
+              }
 
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Welcome! You are signed in.',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    "Email: ${user?.email ?? ''}",
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                ],
-              );
+              // if user is authenticated, show user data
+              if (state is AuthAuthenticated) {
+                final user = state.user;
+
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Welcome! You are signed in.',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      "Username: ${user.username}",
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    Text(
+                      "Email: ${user.email}",
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    Text(
+                      "Role: ${user.role}",
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ],
+                );
+              }
+
+              // otherwise just show not authenticated, but the user shouldn't ever see this
+              return const Text("Not authenticated");
             },
           ),
         ),
