@@ -34,7 +34,7 @@ class _SigninPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: kBGColor,
       // listen to authbloc for state changes
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {

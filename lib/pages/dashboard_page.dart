@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:nws/components/loader.dart';
+import 'package:nws/core/constants.dart';
 
 import '../blocs/auth/auth_bloc.dart';
 import '../blocs/auth/auth_event.dart';
@@ -16,6 +18,7 @@ class DashboardPage extends StatelessWidget {
     return PopScope(
       canPop: false,
       child: Scaffold(
+        backgroundColor: kBGColor,
         appBar: AppBar(
           title: const Text('Dashboard'),
           automaticallyImplyLeading: false,
@@ -31,6 +34,21 @@ class DashboardPage extends StatelessWidget {
               tooltip: 'Sign Out',
             ),
           ],
+        ),
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.all(10),
+          child: GNav(
+            backgroundColor: Colors.white,
+            tabBorderRadius: 15,
+            haptic: true,
+            gap: 8,
+            tabs: const [
+              GButton(icon: Icons.home, text: "Home"),
+              GButton(icon: Icons.play_arrow, text: "Videos"),
+              GButton(icon: Icons.photo, text: "Kata"),
+              GButton(icon: Icons.face, text: "Profile"),
+            ],
+          ),
         ),
         body: Center(
           child: BlocBuilder<AuthBloc, AuthState>(
