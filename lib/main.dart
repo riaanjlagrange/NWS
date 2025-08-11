@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nws/blocs/auth/auth_bloc.dart';
 import 'package:nws/blocs/auth/auth_event.dart';
+import 'package:nws/core/routes.dart';
 import 'package:nws/firebase_options.dart';
-import 'package:nws/pages/auth_page.dart';
-import 'package:nws/pages/dashboard_page.dart';
-import 'package:nws/pages/signin_page.dart';
-import 'package:nws/pages/signup_page.dart';
 import 'package:nws/services/auth_service.dart';
 
 void main() async {
@@ -26,7 +23,6 @@ void main() async {
   );
 }
 
-// Root of your app
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -34,13 +30,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/auth',
-      routes: {
-        '/auth': (context) => AuthPage(),
-        '/signin': (context) => SignInPage(),
-        '/signup': (context) => SignUpPage(),
-        '/dashboard': (context) => DashboardPage(),
-      },
+      initialRoute: AppRoutes.dashboard,
+      routes: AppRoutes.routes,
     );
   }
 }
