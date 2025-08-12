@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nws/blocs/auth/auth_bloc.dart';
 import 'package:nws/blocs/auth/auth_state.dart';
 import 'package:nws/components/loader.dart';
-import 'package:nws/pages/dashboard_page.dart';
+import 'package:nws/pages/loader_page.dart';
+import 'package:nws/pages/main_scaffold.dart';
 import 'package:nws/pages/signin_page.dart';
 
 class AuthPage extends StatelessWidget {
@@ -16,7 +17,9 @@ class AuthPage extends StatelessWidget {
         // show UI based on different auth states
         if (state is AuthAuthenticated) {
           // if the the user is authenticated, show the dashboard
-          return const DashboardPage();
+          return const MainScaffold();
+        } else if (state is AuthLoading) {
+          return const LoaderPage(color: Colors.indigo, size: 40.0);
         } else {
           // else the user must not be authenticated, so show the sign in page
           return const SignInPage();

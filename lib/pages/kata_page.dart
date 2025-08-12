@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:nws/components/custom_bottom_nav_bar.dart';
+import 'package:nws/pages/nav_page.dart';
 
-class KataPage extends StatelessWidget {
+class KataPage extends StatelessWidget implements NavPage {
   const KataPage({super.key});
 
   @override
+  List<Widget> get appBarActions => [];
+
+  @override
+  String get title => 'Kata';
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Kata')),
-      body: const Center(child: Text('Kata Page')),
-      bottomNavigationBar: const CustomBottomNavBar(currentIndex: 2),
-    );
+    return const Center(child: Text('Kata Page'));
   }
 }

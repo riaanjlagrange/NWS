@@ -39,9 +39,7 @@ class _SigninPageState extends State<SignInPage> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           // if login success, go to dashboard or home screen
-          if (state is AuthAuthenticated) {
-            Navigator.pushReplacementNamed(context, "/dashboard");
-          } else if (state is AuthError) {
+          if (state is AuthError) {
             // else show a toast to display the error message to the user
             Fluttertoast.showToast(
               msg: state.message,
@@ -105,17 +103,7 @@ class _SigninPageState extends State<SignInPage> {
                 const SizedBox(height: 20),
 
                 // sign in button
-                BlocBuilder<AuthBloc, AuthState>(
-                  builder: (context, state) {
-                    // show loading spinner while signing in
-                    if (state is AuthLoading) {
-                      return Loader(color: Colors.indigo, size: 20.0);
-                    }
-
-                    // otherwise, show button
-                    return CustomButton(text: "Sign In", onTap: signUserIn);
-                  },
-                ),
+                CustomButton(text: "Sign In", onTap: signUserIn),
 
                 const SizedBox(height: 30),
 

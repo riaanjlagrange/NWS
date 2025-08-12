@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import '../core/routes.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   final int currentIndex;
+  final ValueChanged<int> onTabSelected;
 
-  const CustomBottomNavBar({super.key, required this.currentIndex});
+  const CustomBottomNavBar({
+    super.key,
+    required this.currentIndex,
+    required this.onTabSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +17,7 @@ class CustomBottomNavBar extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
-          BoxShadow(blurRadius: 20, color: Colors.black.withAlpha(3)),
+          BoxShadow(blurRadius: 20, color: Colors.black.withAlpha(1)),
         ],
       ),
       child: SafeArea(
@@ -36,17 +40,7 @@ class CustomBottomNavBar extends StatelessWidget {
               GButton(icon: Icons.face, text: "Profile"),
             ],
             selectedIndex: currentIndex,
-            onTabChange: (index) {
-              final routes = [
-                AppRoutes.dashboard,
-                AppRoutes.videos,
-                AppRoutes.kata,
-                AppRoutes.profile,
-              ];
-              if (index != currentIndex) {
-                Navigator.pushReplacementNamed(context, routes[index]);
-              }
-            },
+            onTabChange: onTabSelected,
           ),
         ),
       ),

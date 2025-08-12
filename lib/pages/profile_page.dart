@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:nws/components/custom_bottom_nav_bar.dart';
+import 'package:nws/pages/nav_page.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatelessWidget implements NavPage {
   const ProfilePage({super.key});
 
   @override
+  List<Widget> get appBarActions => [];
+
+  @override
+  String get title => 'Profile';
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
-      body: const Center(child: Text('Profile Page')),
-      bottomNavigationBar: const CustomBottomNavBar(currentIndex: 3),
-    );
+    return const Center(child: Text('Profile Page'));
   }
 }
