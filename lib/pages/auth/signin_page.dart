@@ -30,6 +30,11 @@ class _SigninPageState extends State<SignInPage> {
     context.read<AuthBloc>().add(SignInRequested(email, password));
   }
 
+  // sign in with google
+  void signInWithGoogle() {
+    context.read<AuthBloc>().add(SignInWithGoogleRequested());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,7 +136,10 @@ class _SigninPageState extends State<SignInPage> {
                 const SizedBox(height: 25),
 
                 // google sign in button
-                SquareTile(imagePath: "assets/images/google_logo.png"),
+                SquareTile(
+                  imagePath: "assets/images/google_logo.png",
+                  onTap: () => signInWithGoogle(),
+                ),
 
                 const SizedBox(height: 25),
 

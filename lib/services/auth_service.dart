@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nws/models/user_model.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Sign up method
+  // sign up method
   Future<UserModel> signUp({
     required String username,
     required String email,
@@ -110,6 +111,53 @@ class AuthService {
       }
 
       throw Exception(message);
+    }
+  }
+
+  Future<UserModel> signInWithGoogle() async {
+    try {
+      final signIn = GoogleSignIn.instance;
+
+      await signIn.initialize(
+        serverClientId:
+            "1015178862223-lt1gv6mm5m3jtd9v25aq65a3pmnkp8o5.apps.googleusercontent.com",
+      );
+
+      final GoogleSignInAccount googleUser = await signIn.authenticate();
+
+      final googleAuth = googleUser.authentication;
+
+      // Create Firebase credential
+      final credential = GoogleAuthProvider.credential(
+        idToken: googleAuth.idToken,
+      );
+
+      final userCredential = await FirebaseAuth.instance.signInWithCredential(
+        credential,
+      );
+
+      final uid = userCredential.user!.uid;
+      final email = userCredential.user!.email ?? '';
+      final username = userCredential.user!.displayName ?? '';
+
+      // Check Firestore for existing user
+      final doc = await _firestore.collection('users').doc(uid).get();
+
+      if (!doc.exists) {
+        final newUser = UserModel(
+          uid: uid,
+          email: email,
+          username: username,
+          role: 'user',
+        );
+
+        await _firestore.collection('users').doc(uid).set(newUser.toMap());
+        return newUser;
+      } else {
+        return UserModel.fromMap(uid, doc.data()!);
+      }
+    } catch (e) {
+      throw Exception("Google sign in failed: $e");
     }
   }
 

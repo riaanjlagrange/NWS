@@ -18,6 +18,7 @@ class AuthPage extends StatelessWidget {
           // if the the user is authenticated, show the dashboard
           return const MainScaffold();
         } else if (state is AuthLoading) {
+          // when auth is in loading state, show the loading page
           return const LoaderPage(color: Colors.indigo, size: 40.0);
         } else {
           // else the user must not be authenticated, so show the sign in page

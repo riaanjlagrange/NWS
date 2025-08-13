@@ -35,5 +35,7 @@ class SignUpRequested extends AuthEvent {
   );
 }
 
+class SignInWithGoogleRequested extends AuthEvent {}
+
 // triggered when the user wants to log out
 class SignOutRequested extends AuthEvent {}

@@ -61,6 +61,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
+    // Handle user sign-in
+    on<SignInWithGoogleRequested>((event, emit) async {
+      // set state to loading
+      emit(AuthLoading());
+
+      try {
+        // try to sign user in and save user
+        final user = await _authService.signInWithGoogle();
+
+        // then pass user with the state
+        emit(AuthAuthenticated(user));
+      } catch (e) {
+        emit(AuthError(e.toString()));
+      }
+    });
+
     // Handle user sign-up
     on<SignUpRequested>((event, emit) async {
       // set state to loading
