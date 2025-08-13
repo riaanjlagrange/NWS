@@ -6,35 +6,28 @@ import 'package:nws/blocs/auth/auth_event.dart';
 import 'package:nws/blocs/auth/auth_state.dart';
 import 'package:nws/components/custom_button.dart';
 import 'package:nws/components/custom_textfield.dart';
-import 'package:nws/components/loader.dart';
 import 'package:nws/components/square_tile.dart';
 import 'package:nws/core/constants.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+class SignInPage extends StatefulWidget {
+  const SignInPage({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<SignInPage> createState() => _SigninPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _SigninPageState extends State<SignInPage> {
   // input controllers
-  final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
 
-  // sign up
-  // update this to use bloc
-  void signUserUp() {
-    final username = _usernameController.text.trim();
+  // sign in using Bloc
+  void signUserIn() {
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
-    final confirmPassword = _confirmPasswordController.text.trim();
 
-    context.read<AuthBloc>().add(
-      SignUpRequested(username, email, password, confirmPassword),
-    );
+    // trigger bloc event for login
+    context.read<AuthBloc>().add(SignInRequested(email, password));
   }
 
   @override
@@ -60,63 +53,60 @@ class _SignUpPageState extends State<SignUpPage> {
         child: Center(
           child: SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 50.0),
+                const SizedBox(height: 50),
 
-                // logo
+                // app logo
                 Image.asset("assets/images/nws_logo.png", height: 100),
 
-                SizedBox(height: 50.0),
+                const SizedBox(height: 50),
 
-                // welcome message
-                Text("Create An Account", style: kSoftHeading),
+                // welcome text
+                Text("Welcome To NWS", style: kSoftHeading),
 
-                SizedBox(height: 25.0),
+                const SizedBox(height: 25),
 
-                // username textfield
-                CustomTextField(
-                  controller: _usernameController,
-                  hintText: "Username",
-                  obscureText: false,
-                ),
-
-                SizedBox(height: 15.0),
-
-                // email textfield
+                // email input
                 CustomTextField(
                   controller: _emailController,
                   hintText: "Email",
                   obscureText: false,
                 ),
 
-                SizedBox(height: 15.0),
+                const SizedBox(height: 25),
 
-                // password textfield
+                // password input
                 CustomTextField(
                   controller: _passwordController,
                   hintText: "Password",
                   obscureText: true,
                 ),
 
-                SizedBox(height: 15.0),
+                const SizedBox(height: 10),
 
-                // confirm password
-                CustomTextField(
-                  controller: _confirmPasswordController,
-                  hintText: "Confirm Password",
-                  obscureText: true,
+                // forgot password text
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        "Forgot Password?",
+                        style: TextStyle(color: Colors.grey[600]),
+                      ),
+                    ],
+                  ),
                 ),
 
-                SizedBox(height: 50.0),
+                const SizedBox(height: 20),
 
-                // sign up button
-                CustomButton(text: "Sign Up", onTap: signUserUp),
+                // sign in button
+                CustomButton(text: "Sign In", onTap: signUserIn),
 
-                SizedBox(height: 25.0),
+                const SizedBox(height: 30),
 
-                // or continue with google
+                // OR divider
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Row(
@@ -124,11 +114,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       Expanded(
                         child: Divider(thickness: 0.5, color: Colors.grey[400]),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
                           "OR CONTINUE WITH",
-                          style: TextStyle(color: Colors.grey[700]),
+                          style: TextStyle(color: Colors.grey),
                         ),
                       ),
                       Expanded(
@@ -138,25 +128,25 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
 
-                SizedBox(height: 20.0),
+                const SizedBox(height: 25),
 
-                // sign in with google button
+                // google sign in button
                 SquareTile(imagePath: "assets/images/google_logo.png"),
 
-                SizedBox(height: 30.0),
+                const SizedBox(height: 25),
 
-                // already a member? login now
+                // register link
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Already a member?"),
+                    const Text("Not a member?"),
                     const SizedBox(width: 4),
                     GestureDetector(
                       onTap: () {
-                        Navigator.pop(context);
+                        Navigator.pushNamed(context, "/signup");
                       },
-                      child: Text(
-                        "Sign In",
+                      child: const Text(
+                        "Sign Up",
                         style: TextStyle(
                           color: Colors.indigo,
                           fontWeight: FontWeight.bold,

@@ -5,12 +5,14 @@ import 'package:nws/blocs/auth/auth_state.dart';
 import 'package:nws/components/custom_bottom_nav_bar.dart';
 import 'package:nws/components/loader.dart';
 import 'package:nws/core/constants.dart';
+import 'package:nws/pages/dashboard/dashboard_page.dart';
+import 'package:nws/pages/kata/kata_page.dart';
 import 'package:nws/pages/nav_page.dart';
-import 'dashboard_page.dart';
-import 'videos_page.dart';
-import 'kata_page.dart';
-import 'profile_page.dart';
+import 'package:nws/pages/profile/profile_page.dart';
+import 'package:nws/pages/videos/videos_page.dart';
 
+// MainScaffold is to be used to manage all sub pages when logged in
+// to make it more seemless when switches between pages/tabs
 class MainScaffold extends StatefulWidget {
   const MainScaffold({super.key});
 

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-
-import '../pages/dashboard_page.dart';
-import '../pages/videos_page.dart';
-import '../pages/kata_page.dart';
-import '../pages/profile_page.dart';
-import '../pages/auth_page.dart';
+import 'package:nws/pages/auth/auth_page.dart';
+import 'package:nws/pages/dashboard/dashboard_page.dart';
+import 'package:nws/pages/kata/kata_page.dart';
+import 'package:nws/pages/profile/profile_page.dart';
+import 'package:nws/pages/videos/videos_page.dart';
 
 class AppRoutes {
   static const dashboard = '/dashboard';

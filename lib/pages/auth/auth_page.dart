@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nws/blocs/auth/auth_bloc.dart';
 import 'package:nws/blocs/auth/auth_state.dart';
-import 'package:nws/components/loader.dart';
+import 'package:nws/pages/auth/signin_page.dart';
 import 'package:nws/pages/loader_page.dart';
 import 'package:nws/pages/main_scaffold.dart';
-import 'package:nws/pages/signin_page.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
