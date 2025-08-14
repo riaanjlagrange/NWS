@@ -114,6 +114,8 @@ class AuthService {
     }
   }
 
+  // sign user in with google
+  // WIP still not working TODO:  fix
   Future<UserModel> signInWithGoogle() async {
     try {
       final signIn = GoogleSignIn.instance;
@@ -140,7 +142,7 @@ class AuthService {
       final email = userCredential.user!.email ?? '';
       final username = userCredential.user!.displayName ?? '';
 
-      // Check Firestore for existing user
+      // check Firestore for existing user
       final doc = await _firestore.collection('users').doc(uid).get();
 
       if (!doc.exists) {

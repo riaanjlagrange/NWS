@@ -7,7 +7,6 @@ import 'package:nws/blocs/auth/auth_state.dart';
 import 'package:nws/components/custom_button.dart';
 import 'package:nws/components/custom_textfield.dart';
 import 'package:nws/components/square_tile.dart';
-import 'package:nws/core/constants.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -21,8 +20,8 @@ class _SigninPageState extends State<SignInPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  // sign in using Bloc
-  void signUserIn() {
+  // sign in
+  void signIn() {
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
@@ -37,8 +36,13 @@ class _SigninPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+    final dividerColor = theme.dividerTheme.color ?? Colors.grey;
+
     return Scaffold(
-      backgroundColor: kBGColor,
+      // set background color to the current theme
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       // listen to authbloc for state changes
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
@@ -68,7 +72,11 @@ class _SigninPageState extends State<SignInPage> {
                 const SizedBox(height: 50),
 
                 // welcome text
-                Text("Welcome To NWS", style: kSoftHeading),
+                Text(
+                  "Welcome To NWS",
+                  style: textTheme.titleLarge,
+                  textAlign: TextAlign.center,
+                ),
 
                 const SizedBox(height: 25),
 
@@ -90,6 +98,7 @@ class _SigninPageState extends State<SignInPage> {
 
                 const SizedBox(height: 10),
 
+                // TODO: need to add functionality for this
                 // forgot password text
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -98,7 +107,9 @@ class _SigninPageState extends State<SignInPage> {
                     children: [
                       Text(
                         "Forgot Password?",
-                        style: TextStyle(color: Colors.grey[600]),
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: theme.hintColor,
+                        ),
                       ),
                     ],
                   ),
@@ -107,7 +118,7 @@ class _SigninPageState extends State<SignInPage> {
                 const SizedBox(height: 20),
 
                 // sign in button
-                CustomButton(text: "Sign In", onTap: signUserIn),
+                CustomButton(text: "Sign In", onTap: signIn),
 
                 const SizedBox(height: 30),
 
@@ -117,13 +128,15 @@ class _SigninPageState extends State<SignInPage> {
                   child: Row(
                     children: [
                       Expanded(
-                        child: Divider(thickness: 0.5, color: Colors.grey[400]),
+                        child: Divider(thickness: 0.5, color: dividerColor),
                       ),
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
                           "OR CONTINUE WITH",
-                          style: TextStyle(color: Colors.grey),
+                          style: textTheme.bodySmall?.copyWith(
+                            color: theme.hintColor,
+                          ),
                         ),
                       ),
                       Expanded(
@@ -153,10 +166,10 @@ class _SigninPageState extends State<SignInPage> {
                       onTap: () {
                         Navigator.pushNamed(context, "/signup");
                       },
-                      child: const Text(
+                      child: Text(
                         "Sign Up",
-                        style: TextStyle(
-                          color: Colors.indigo,
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.primary,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

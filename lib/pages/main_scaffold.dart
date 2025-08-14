@@ -7,6 +7,7 @@ import 'package:nws/components/loader.dart';
 import 'package:nws/core/constants.dart';
 import 'package:nws/pages/dashboard/dashboard_page.dart';
 import 'package:nws/pages/kata/kata_page.dart';
+import 'package:nws/pages/loader_page.dart';
 import 'package:nws/pages/nav_page.dart';
 import 'package:nws/pages/profile/profile_page.dart';
 import 'package:nws/pages/videos/videos_page.dart';
@@ -36,6 +37,7 @@ class _MainScaffoldState extends State<MainScaffold> {
   Widget build(BuildContext context) {
     // get the current page
     final currentPage = _pages[_currentIndex];
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -45,12 +47,12 @@ class _MainScaffoldState extends State<MainScaffold> {
         // set the appbar actions to the current page's actions
         actions: currentPage.appBarActions,
       ),
-      backgroundColor: kBGColor,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           // check the state and display the correct widget
           if (state is AuthLoading) {
-            return Loader(color: Colors.indigo, size: 40.0);
+            return LoaderPage(color: theme.colorScheme.primary, size: 40.0);
           }
           if (state is AuthAuthenticated) {
             // if the state is authenticated, show the current page

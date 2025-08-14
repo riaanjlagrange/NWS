@@ -13,26 +13,30 @@ class CustomBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color:
+            theme.bottomNavigationBarTheme.backgroundColor ??
+            theme.scaffoldBackgroundColor,
         boxShadow: [
-          BoxShadow(blurRadius: 20, color: Colors.black.withAlpha(1)),
+          BoxShadow(blurRadius: 20, color: theme.shadowColor.withOpacity(0.1)),
         ],
       ),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
           child: GNav(
-            rippleColor: Colors.grey[300]!,
-            hoverColor: Colors.grey[100]!,
+            rippleColor: theme.colorScheme.primary.withOpacity(0.1),
+            hoverColor: theme.colorScheme.primary.withOpacity(0.05),
             gap: 8,
-            activeColor: Colors.white,
+            activeColor: theme.colorScheme.onPrimary,
             iconSize: 24,
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             duration: const Duration(milliseconds: 300),
-            tabBackgroundColor: Colors.indigo,
-            color: Colors.black,
+            tabBackgroundColor: theme.colorScheme.primary,
+            color: theme.iconTheme.color ?? theme.colorScheme.onSurface,
             tabs: const [
               GButton(icon: Icons.home, text: "Home"),
               GButton(icon: Icons.play_arrow, text: "Videos"),

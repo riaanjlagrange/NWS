@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nws/blocs/auth/auth_bloc.dart';
-import 'package:nws/blocs/auth/auth_event.dart';
 import 'package:nws/blocs/auth/auth_state.dart';
 import 'package:nws/pages/nav_page.dart';
 
@@ -12,18 +11,7 @@ class DashboardPage extends StatelessWidget implements NavPage {
   String get title => 'Dashboard';
 
   @override
-  List<Widget> get appBarActions => [
-    Builder(
-      builder: (context) => IconButton(
-        onPressed: () {
-          context.read<AuthBloc>().add(SignOutRequested());
-          Navigator.pushReplacementNamed(context, '/signin');
-        },
-        icon: const Icon(Icons.logout),
-        tooltip: 'Sign Out',
-      ),
-    ),
-  ];
+  List<Widget> get appBarActions => [];
 
   @override
   Widget build(BuildContext context) {

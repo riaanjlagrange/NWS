@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:nws/core/constants.dart';
 
 // Loading screen
 class LoaderPage extends StatelessWidget {
@@ -11,8 +10,10 @@ class LoaderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
-      color: kBGColor,
+      color: theme.scaffoldBackgroundColor,
       child: Center(
         child: SpinKitFoldingCube(color: color, size: size),
       ),

@@ -43,14 +43,19 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+    final dividerColor = theme.dividerTheme.color ?? Colors.grey;
+
     return Scaffold(
-      backgroundColor: kBGColor,
+      backgroundColor: theme.scaffoldBackgroundColor,
       // listen to authbloc for state changes
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           // if login success, go to dashboard or home screen
           if (state is AuthError) {
             // else show a toast to display the error message to the user
+            // TODO: refactor this, I think it should rather belong in the auth page
             Fluttertoast.showToast(
               msg: state.message,
               toastLength: Toast.LENGTH_LONG,
@@ -74,8 +79,12 @@ class _SignUpPageState extends State<SignUpPage> {
 
                 SizedBox(height: 50.0),
 
-                // welcome message
-                Text("Create An Account", style: kSoftHeading),
+                // title
+                Text(
+                  "Create An Account",
+                  style: textTheme.titleLarge,
+                  textAlign: TextAlign.center,
+                ),
 
                 SizedBox(height: 25.0),
 
@@ -126,17 +135,19 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: Row(
                     children: [
                       Expanded(
-                        child: Divider(thickness: 0.5, color: Colors.grey[400]),
+                        child: Divider(thickness: 0.5, color: dividerColor),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
                           "OR CONTINUE WITH",
-                          style: TextStyle(color: Colors.grey[700]),
+                          style: textTheme.bodySmall?.copyWith(
+                            color: theme.hintColor,
+                          ),
                         ),
                       ),
                       Expanded(
-                        child: Divider(thickness: 0.5, color: Colors.grey[400]),
+                        child: Divider(thickness: 0.5, color: dividerColor),
                       ),
                     ],
                   ),
@@ -156,7 +167,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Already a member?"),
+                    Text("Already a member?", style: textTheme.bodyMedium),
                     const SizedBox(width: 4),
                     GestureDetector(
                       onTap: () {
@@ -165,7 +176,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: Text(
                         "Sign In",
                         style: TextStyle(
-                          color: Colors.indigo,
+                          color: theme.colorScheme.primary,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

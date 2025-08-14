@@ -26,37 +26,30 @@ class _CustomTextFieldState extends State<CustomTextField> {
   }
 
   void _toggleVisibility() {
-    setState(() {
-      _obscure = !_obscure;
-    });
+    setState(() => _obscure = !_obscure);
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final iconColor = theme.colorScheme.onSurface.withAlpha(50);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: TextField(
         controller: widget.controller,
         obscureText: _obscure,
+        style: theme.textTheme.bodyMedium,
         decoration: InputDecoration(
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey.shade400),
-          ),
-          fillColor: Colors.grey.shade200,
-          filled: true,
           hintText: widget.hintText,
-          hintStyle: TextStyle(color: Colors.grey[500]),
-          // show eye icon only if it's a password field
           suffixIcon: widget.obscureText
               ? IconButton(
+                  onPressed: _toggleVisibility,
+                  tooltip: _obscure ? 'Show password' : 'Hide password',
                   icon: Icon(
                     _obscure ? Icons.visibility_off : Icons.visibility,
-                    color: Colors.grey,
                   ),
-                  onPressed: _toggleVisibility,
+                  color: iconColor,
                 )
               : null,
         ),

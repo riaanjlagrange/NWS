@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nws/blocs/auth/auth_bloc.dart';
 import 'package:nws/blocs/auth/auth_event.dart';
 import 'package:nws/core/routes.dart';
+import 'package:nws/core/theme.dart';
 import 'package:nws/firebase_options.dart';
 import 'package:nws/services/auth_service.dart';
 
@@ -30,6 +31,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: "NWS Karate",
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: ThemeMode.system,
       initialRoute: AppRoutes.auth,
       routes: AppRoutes.routes,
     );
