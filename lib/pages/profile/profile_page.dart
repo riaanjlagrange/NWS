@@ -14,7 +14,7 @@ class ProfilePage extends StatelessWidget implements NavPage {
         onPressed: () {
           // TODO: fix sign out session. You are not able to sign in again after signout out with this
           context.read<AuthBloc>().add(SignOutRequested());
-          Navigator.pushReplacementNamed(context, '/signin');
+          Navigator.pushReplacementNamed(context, '/auth');
         },
         icon: const Icon(Icons.logout),
         tooltip: 'Sign Out',
