@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:nws/models/video_model.dart';
+import 'package:nws/models/videos_model.dart';
 import 'package:nws/pages/videos/videos_detail_page.dart';
 
 class VideosCard extends StatelessWidget {
-  final VideoModel video;
+  final VideosModel video;
 
   const VideosCard({super.key, required this.video});
 

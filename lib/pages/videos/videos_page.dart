@@ -1,87 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nws/components/videos_card.dart';
-import 'package:nws/models/video_model.dart';
-import 'package:nws/pages/nav_page.dart';
-import 'package:nws/blocs/auth/auth_bloc.dart';
-import 'package:nws/blocs/auth/auth_state.dart';
-import 'package:nws/pages/videos/videos_add_page.dart';
+import 'package:nws/models/videos_categories_model.dart';
+import 'package:nws/models/videos_model.dart';
 
-class VideosPage extends StatefulWidget implements NavPage {
-  const VideosPage({super.key});
+class VideosPage extends StatefulWidget {
+  final VideosCategories category;
+
+  const VideosPage({super.key, required this.category});
 
   @override
   State<VideosPage> createState() => _VideosPageState();
-
-  @override
-  String get title => 'Videos';
-
-  @override
-  List<Widget> get appBarActions => _VideosPageState.actions;
 }
 
 class _VideosPageState extends State<VideosPage> {
-  static List<Widget> actions = [];
-
-  final List<VideoModel> videos = [
-    VideoModel(
+  final List<VideosModel> videos = [
+    VideosModel(
       id: '1',
-      title: 'Sample Video 1',
-      thumbnailUrl: 'https://via.placeholder.com/300x180.png?text=Video+1',
-      videoUrl: 'https://example.com/video1.mp4',
+      title: 'Beginner Workout',
+      thumbnailUrl: 'https://via.placeholder.com/300x180.png?text=Workout+1',
+      videoUrl: 'https://example.com/workout1.mp4',
+      category: VideosCategories.basic,
       createdAt: DateTime.now(),
     ),
-    VideoModel(
+    VideosModel(
       id: '2',
-      title: 'Sample Video 2',
-      thumbnailUrl: 'https://via.placeholder.com/300x180.png?text=Video+2',
-      videoUrl: 'https://example.com/video2.mp4',
+      title: 'Flutter Tutorial',
+      thumbnailUrl: 'https://via.placeholder.com/300x180.png?text=Tutorial+1',
+      videoUrl: 'https://example.com/tutorial1.mp4',
+      category: VideosCategories.advanced,
       createdAt: DateTime.now(),
     ),
   ];
 
-  void _addVideo(VideoModel video) {
-    // add the video to the array
-    setState(() {
-      videos.add(video);
-    });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    // check if user is admin via AuthBloc
-    final state = context.read<AuthBloc>().state;
-    if (state is AuthAuthenticated && state.user.role == "admin") {
-      // if admin is authenticated, add add video action
-      actions = [
-        IconButton(
-          icon: const Icon(Icons.add),
-          onPressed: () async {
-            final result = await Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const VideosAddPage()),
-            );
-            if (result != null && result is VideoModel) {
-              _addVideo(result);
-            }
-          },
-        ),
-      ];
-    } else {
-      actions = [];
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: videos.length,
-      itemBuilder: (context, index) {
-        final video = videos[index];
-        return VideosCard(video: video);
-      },
+    final categoryVideos = videos
+        .where((video) => video.category == widget.category)
+        .toList();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.category.label),
+        backgroundColor: widget.category.color,
+      ),
+      body: ListView.builder(
+        itemCount: categoryVideos.length,
+        itemBuilder: (context, index) {
+          final video = categoryVideos[index];
+          return VideosCard(video: video);
+        },
+      ),
     );
   }
 }

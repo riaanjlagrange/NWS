@@ -3,13 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nws/blocs/auth/auth_bloc.dart';
 import 'package:nws/blocs/auth/auth_state.dart';
 import 'package:nws/components/custom_bottom_nav_bar.dart';
-import 'package:nws/components/loader.dart';
-import 'package:nws/core/constants.dart';
 import 'package:nws/pages/dashboard/dashboard_page.dart';
 import 'package:nws/pages/kata/kata_page.dart';
 import 'package:nws/pages/loader_page.dart';
 import 'package:nws/pages/nav_page.dart';
 import 'package:nws/pages/profile/profile_page.dart';
+import 'package:nws/pages/videos/videos_categories_page.dart';
 import 'package:nws/pages/videos/videos_page.dart';
 
 // MainScaffold is to be used to manage all sub pages when logged in
@@ -28,7 +27,7 @@ class _MainScaffoldState extends State<MainScaffold> {
   // list of pages using navpage abstract class
   late final List<NavPage> _pages = [
     const DashboardPage(),
-    const VideosPage(),
+    const VideosCategoriesPage(),
     const KataPage(),
     const ProfilePage(),
   ];

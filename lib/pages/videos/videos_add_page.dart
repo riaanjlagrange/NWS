@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nws/models/video_model.dart';
+import 'package:nws/models/videos_categories_model.dart';
+import 'package:nws/models/videos_model.dart';
 
 class VideosAddPage extends StatefulWidget {
   const VideosAddPage({super.key});
@@ -24,10 +25,11 @@ class _VideosAddPageState extends State<VideosAddPage> {
 
   void _saveVideo() {
     if (_formKey.currentState!.validate()) {
-      final newVideo = VideoModel(
+      final newVideo = VideosModel(
         id: DateTime.now().millisecondsSinceEpoch.toString(), // temp ID
         title: _titleController.text,
         thumbnailUrl: _thumbnailController.text,
+        category: VideosCategories.expert,
         videoUrl: _videoUrlController.text,
         createdAt: DateTime.now(),
       );
